@@ -1,7 +1,7 @@
 package client
 
 import (
-	"github/gloine/gobtclib/futures"
+	"github.com/gloine/gobtclib/futures"
 )
 
 /*

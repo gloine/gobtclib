@@ -4,14 +4,15 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github/gloine/gobtclib/base"
-	"github/gloine/gobtclib/futures"
-	"github/gloine/gobtclib/utils"
 	"io/ioutil"
 	glog "log"
 	"net/http"
 	"sync"
 	"sync/atomic"
+
+	"github.com/gloine/gobtclib/base"
+	"github.com/gloine/gobtclib/futures"
+	"github.com/gloine/gobtclib/utils"
 
 	"github.com/gobasis/log"
 )

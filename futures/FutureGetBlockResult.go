@@ -2,8 +2,8 @@ package futures
 
 import (
 	"encoding/json"
-	"github/gloine/gobtclib/base"
-	"github/gloine/gobtclib/results"
+	"github.com/gloine/gobtclib/base"
+	"github.com/gloine/gobtclib/results"
 )
 
 /*

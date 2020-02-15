@@ -2,9 +2,10 @@ package client
 
 import (
 	"encoding/hex"
-	"github/gloine/gobtclib/futures"
-	"github/gloine/gobtclib/results"
-	"github/gloine/gobtclib/utils"
+
+	"github.com/gloine/gobtclib/futures"
+	"github.com/gloine/gobtclib/results"
+	"github.com/gloine/gobtclib/utils"
 )
 
 /*

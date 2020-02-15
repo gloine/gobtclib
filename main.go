@@ -1,6 +1,6 @@
 package btc
 
-import "github/gloine/gobtclib/client"
+import "github.com/gloine/gobtclib/client"
 
 /*
 Description:

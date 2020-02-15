@@ -1,10 +1,10 @@
 package main
 
 import (
+	"github.com/gloine/gobtclib/client"
+	"github.com/gloine/gobtclib/examples/demos"
 	"github.com/gobasis/log"
 	"github.com/gobasis/log/zapimpl"
-	"github/gloine/gobtclib/client"
-	"github/gloine/gobtclib/examples/demos"
 )
 
 /*

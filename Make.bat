@@ -6,7 +6,7 @@ if %0 == "install" goto install
 
 :install
 echo -------------------------------------- begin to make install...
-::go get github/gloine/gobtclib
+::go get github.com/gloine/gobtclib
 go get -u go.uber.org/zap
 go get -u github.com/gobasis/log
 mkdir %GOPATH%\src\github.com\gloine

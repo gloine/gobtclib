@@ -1,7 +1,7 @@
 package demos
 
 import (
-	"github/gloine/gobtclib/client"
+	"github.com/gloine/gobtclib/client"
 )
 
 var cli *client.Client

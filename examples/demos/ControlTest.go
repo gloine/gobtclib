@@ -2,7 +2,7 @@ package demos
 
 import (
 	"github.com/gobasis/log"
-	//"github/gloine/gobtclib/results"
+	//"github.com/gloine/gobtclib/results"
 )
 
 /*

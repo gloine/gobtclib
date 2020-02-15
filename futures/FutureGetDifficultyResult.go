@@ -2,7 +2,7 @@ package futures
 
 import (
 	"encoding/json"
-	"github.com/chainlibs/gobtclib/base"
+	"github/gloine/gobtclib/base"
 )
 
 /*
@@ -11,7 +11,7 @@ FutureGetDifficultyResult is a future promise to deliver the result of a
 GetDifficultyAsync RPC invocation (or an applicable error).
  * Author: architect.bian
  * Date: 2018/09/14 17:36
- */
+*/
 type FutureGetDifficultyResult chan *base.Response
 
 /*
@@ -20,7 +20,7 @@ Receive waits for the response promised by the future and returns the
 proof-of-work difficulty as a multiple of the minimum difficulty.
  * Author: architect.bian
  * Date: 2018/09/14 17:36
- */
+*/
 func (r FutureGetDifficultyResult) Receive() (float64, error) {
 	res, err := ReceiveFuture(r)
 	if err != nil {

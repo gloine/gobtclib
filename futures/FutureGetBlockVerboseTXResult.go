@@ -2,8 +2,8 @@ package futures
 
 import (
 	"encoding/json"
-	"github.com/chainlibs/gobtclib/base"
-	"github.com/chainlibs/gobtclib/results"
+	"github/gloine/gobtclib/base"
+	"github/gloine/gobtclib/results"
 )
 
 /*
@@ -12,7 +12,7 @@ FutureGetBlockVerboseTXResult is a future promise to deliver the result of a
 GetBlockVerboseTXAsync RPC invocation (or an applicable error).
  * Author: architect.bian
  * Date: 2018/09/17 16:26
- */
+*/
 type FutureGetBlockVerboseTXResult chan *base.Response
 
 /*
@@ -21,7 +21,7 @@ Receive waits for the response promised by the future and returns the data
 structure from the server with information about the requested block.
  * Author: architect.bian
  * Date: 2018/09/17 16:26
- */
+*/
 func (r FutureGetBlockVerboseTXResult) Receive() (*results.GetBlockVerboseTXResult, error) {
 	res, err := ReceiveFuture(r)
 	if err != nil {
@@ -36,4 +36,3 @@ func (r FutureGetBlockVerboseTXResult) Receive() (*results.GetBlockVerboseTXResu
 	}
 	return &blockResult, nil
 }
-

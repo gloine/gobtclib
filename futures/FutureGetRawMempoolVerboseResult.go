@@ -2,8 +2,8 @@ package futures
 
 import (
 	"encoding/json"
-	"github.com/chainlibs/gobtclib/base"
-	"github.com/chainlibs/gobtclib/results"
+	"github/gloine/gobtclib/base"
+	"github/gloine/gobtclib/results"
 )
 
 /*
@@ -12,7 +12,7 @@ FutureGetRawMempoolVerboseResult is a future promise to deliver the result of
 a GetRawMempoolVerboseAsync RPC invocation (or an applicable error).
  * Author: architect.bian
  * Date: 2018/09/17 20:11
- */
+*/
 type FutureGetRawMempoolVerboseResult chan *base.Response
 
 /*
@@ -22,7 +22,7 @@ transaction hashes to an associated data structure with information about the
 transaction for all transactions in the memory pool.
  * Author: architect.bian
  * Date: 2018/09/17 20:11
- */
+*/
 func (r FutureGetRawMempoolVerboseResult) Receive() (map[string]results.GetRawMempoolVerboseResult, error) {
 	res, err := ReceiveFuture(r)
 	if err != nil {
@@ -37,4 +37,3 @@ func (r FutureGetRawMempoolVerboseResult) Receive() (map[string]results.GetRawMe
 	}
 	return mempoolItems, nil
 }
-

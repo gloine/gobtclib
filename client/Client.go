@@ -1,18 +1,19 @@
 package client
 
 import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"github/gloine/gobtclib/base"
+	"github/gloine/gobtclib/futures"
+	"github/gloine/gobtclib/utils"
+	"io/ioutil"
+	glog "log"
 	"net/http"
 	"sync"
 	"sync/atomic"
-	glog "log"
-	"io/ioutil"
-	"fmt"
-	"bytes"
-	"github.com/chainlibs/gobtclib/utils"
-	"encoding/json"
+
 	"github.com/gobasis/log"
-	"github.com/chainlibs/gobtclib/base"
-	"github.com/chainlibs/gobtclib/futures"
 )
 
 /*
@@ -20,8 +21,8 @@ Description:
 New creates a new RPC client based on the provided connection configuration details.
  * Author: architect.bian
  * Date: 2018/08/23 14:53
- */
-func NewClient(config *Config) (*Client) {
+*/
+func NewClient(config *Config) *Client {
 	var httpClient *http.Client
 	var err error
 	httpClient, err = utils.Http.NewClient(config.Proxy, config.EnableTLS, config.Certificates)
@@ -31,11 +32,11 @@ func NewClient(config *Config) (*Client) {
 	}
 
 	client := &Client{
-		config:          config,
-		httpClient:      httpClient,
-		requestsChan:    make(chan *base.RequestDetail, requestsChanBufferSize),
-		disconnect:      make(chan struct{}),
-		shutdown:        make(chan struct{}),
+		config:       config,
+		httpClient:   httpClient,
+		requestsChan: make(chan *base.RequestDetail, requestsChanBufferSize),
+		disconnect:   make(chan struct{}),
+		shutdown:     make(chan struct{}),
 	}
 
 	return client
@@ -53,7 +54,7 @@ promises to deliver the result of the invocation at some future time. Invoking t
 the returned future will block util the result is available if it's not already.
  * Author: architect.bian
  * Date: 2018/08/26 14:03
- */
+*/
 type Client struct {
 	id uint64 // atomic, so must stay 64-bit aligned
 	// config holds the connection configuration assoiated with this client.
@@ -66,9 +67,9 @@ type Client struct {
 	disconnected bool
 	// Networking infrastructure.
 	requestsChan chan *base.RequestDetail
-	disconnect      chan struct{}
-	shutdown        chan struct{}
-	wg              sync.WaitGroup
+	disconnect   chan struct{}
+	shutdown     chan struct{}
+	wg           sync.WaitGroup
 }
 
 /*
@@ -76,7 +77,7 @@ Description:
 start begins processing input and output messages.
  * Author: architect.bian
  * Date: 2018/08/23 16:02
- */
+*/
 func (c *Client) Startup() *Client {
 	log.Info("Starting RPC client", "Host", c.config.Host)
 	c.wg.Add(1)
@@ -91,7 +92,7 @@ Description:
 SendAsync send command and args, return an instance of a future type
  * Author: architect.bian
  * Date: 2018/08/23 16:02
- */
+*/
 func (c *Client) SendAsync(command string, args ...interface{}) futures.FutureResult {
 	cmd := NewCommand(command, args...)
 	return futures.FutureResult(c.sendCmd(cmd))
@@ -102,7 +103,7 @@ Description:
 Send send any command and arguments, then return a result of interface type
  * Author: architect.bian
  * Date: 2018/08/23 16:02
- */
+*/
 func (c *Client) Send(command string, args ...interface{}) (*interface{}, error) {
 	cmd := NewCommand(command, args...)
 	return futures.FutureResult(c.sendCmd(cmd)).Receive()
@@ -116,7 +117,7 @@ while allowing the sender to continue running asynchronously.  It must be run
 as a goroutine.
  * Author: architect.bian
  * Date: 2018/08/26 16:05
- */
+*/
 func (c *Client) handleRequests() {
 out:
 	for {
@@ -155,7 +156,7 @@ result, unmarshalling it, and delivering the unmarshalled result to the
 provided response channel.
  * Author: architect.bian
  * Date: 2018/10/07 18:26
- */
+*/
 func (c *Client) doRequest(requestDetail *base.RequestDetail) {
 	detail := requestDetail.Detail
 	log.Debug("Sending command", "command", detail.Method, "id", detail.Id)
@@ -195,7 +196,7 @@ HTTP client associated with the client.  It is backed by a buffered channel,
 so it will not block until the send channel is full.
  * Author: architect.bian
  * Date: 2018/08/26 19:29
- */
+*/
 func (c *Client) sendRequest(req *http.Request, detail *base.JsonDetail) {
 	// Don't send the request if shutting down.
 	select {
@@ -219,7 +220,7 @@ however, the underlying HTTP client might coalesce multiple commands
 depending on several factors including the remote server configuration.
  * Author: architect.bian
  * Date: 2018/08/26 19:29
- */
+*/
 func (c *Client) sendDetail(detail *base.JsonDetail) {
 	// Generate a request to the configured RPC server.
 	protocol := "http"
@@ -250,7 +251,7 @@ this function should be used to ensure the ID is unique amongst all requestsChan
 being made.
  * Author: architect.bian
  * Date: 2018/08/26 14:30
- */
+*/
 func (c *Client) NextID() uint64 {
 	return atomic.AddUint64(&c.id, 1)
 }
@@ -263,7 +264,7 @@ future.  It handles both websocket and HTTP POST mode depending on the
 configuration of the client.
  * Author: architect.bian
  * Date: 2018/08/26 18:46
- */
+*/
 func (c *Client) sendCmd(cmd *Command) chan *base.Response {
 	// Marshal the command.
 	id := c.NextID()
@@ -293,7 +294,7 @@ for the reply, and returns the result from it.  It will return the error
 field in the reply if there is one.
  * Author: architect.bian
  * Date: 2018/10/06 19:50
- */
+*/
 func (c *Client) sendCmdAndWait(cmd *Command) (interface{}, error) {
 	// Marshal the command to JSON-RPC, send it to the connected server, and
 	// wait for a response on the returned channel.
@@ -307,7 +308,7 @@ is already in progress.  It will return false if the shutdown is not needed.
 This function is safe for concurrent access.
  * Author: architect.bian
  * Date: 2018/08/26 19:38
- */
+*/
 func (c *Client) Shutdown() {
 	// Ignore the shutdown request if the client is already in the process
 	// of shutting down or already shutdown.

@@ -2,7 +2,7 @@ package futures
 
 import (
 	"encoding/json"
-	"github.com/chainlibs/gobtclib/base"
+	"github/gloine/gobtclib/base"
 )
 
 /*
@@ -10,7 +10,7 @@ Description:
 FutureString is a future promise to deliver the result of string type.
  * Author: architect.bian
  * Date: 2018/10/15 10:56
- */
+*/
 type FutureString chan *base.Response
 
 /*
@@ -19,7 +19,7 @@ Receive waits for the response promised by the future and returns the
 result of string type.
  * Author: architect.bian
  * Date: 2018/10/15 10:56
- */
+*/
 func (f FutureString) Receive() (*string, error) {
 	res, err := ReceiveFuture(f)
 	if err != nil {

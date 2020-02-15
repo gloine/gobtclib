@@ -1,8 +1,9 @@
 package futures
+
 import (
 	"encoding/json"
-	"github.com/chainlibs/gobtclib/base"
-	"github.com/chainlibs/gobtclib/results"
+	"github/gloine/gobtclib/base"
+	"github/gloine/gobtclib/results"
 )
 
 /*
@@ -11,7 +12,7 @@ FutureGetBlockHeaderResult is a future promise to deliver the result of a
 GetBlockAsync RPC invocation (or an applicable error).
  * Author: architect.bian
  * Date: 2018/09/15 17:52
- */
+*/
 type FutureGetBlockHeaderResult chan *base.Response
 
 /*
@@ -20,7 +21,7 @@ Receive waits for the response promised by the future and returns the
 data structure of the blockheader requested from the server given its hash.
  * Author: architect.bian
  * Date: 2018/09/15 17:52
- */
+*/
 func (r FutureGetBlockHeaderResult) Receive() (*results.GetBlockHeaderResult, error) {
 	res, err := ReceiveFuture(r)
 	if err != nil {
@@ -36,4 +37,3 @@ func (r FutureGetBlockHeaderResult) Receive() (*results.GetBlockHeaderResult, er
 
 	return &bh, nil
 }
-

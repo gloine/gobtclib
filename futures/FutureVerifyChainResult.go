@@ -2,7 +2,7 @@ package futures
 
 import (
 	"encoding/json"
-	"github.com/chainlibs/gobtclib/base"
+	"github/gloine/gobtclib/base"
 )
 
 /*
@@ -12,7 +12,7 @@ VerifyChainAsync, VerifyChainLevelAsyncRPC, or VerifyChainBlocksAsync
 invocation (or an applicable error).
  * Author: architect.bian
  * Date: 2018/09/17 20:54
- */
+*/
 type FutureVerifyChainResult chan *base.Response
 
 /*
@@ -22,7 +22,7 @@ or not the chain verified based on the check level and number of blocks
 to verify specified in the original call.
  * Author: architect.bian
  * Date: 2018/09/17 20:54
- */
+*/
 func (r FutureVerifyChainResult) Receive() (bool, error) {
 	res, err := ReceiveFuture(r)
 	if err != nil {
@@ -37,4 +37,3 @@ func (r FutureVerifyChainResult) Receive() (bool, error) {
 	}
 	return verified, nil
 }
-

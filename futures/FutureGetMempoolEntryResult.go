@@ -2,8 +2,8 @@ package futures
 
 import (
 	"encoding/json"
-	"github.com/chainlibs/gobtclib/base"
-	"github.com/chainlibs/gobtclib/results"
+	"github/gloine/gobtclib/base"
+	"github/gloine/gobtclib/results"
 )
 
 /*
@@ -12,7 +12,7 @@ FutureGetMempoolEntryResult is a future promise to deliver the result of a
 GetMempoolEntryAsync RPC invocation (or an applicable error).
  * Author: architect.bian
  * Date: 2018/09/17 20:24
- */
+*/
 type FutureGetMempoolEntryResult chan *base.Response
 
 /*
@@ -22,7 +22,7 @@ structure with information about the transaction in the memory pool given
 its hash.
  * Author: architect.bian
  * Date: 2018/09/17 20:24
- */
+*/
 func (r FutureGetMempoolEntryResult) Receive() (*results.GetMempoolEntryResult, error) {
 	res, err := ReceiveFuture(r)
 	if err != nil {
@@ -38,4 +38,3 @@ func (r FutureGetMempoolEntryResult) Receive() (*results.GetMempoolEntryResult, 
 
 	return &mempoolEntryResult, nil
 }
-
